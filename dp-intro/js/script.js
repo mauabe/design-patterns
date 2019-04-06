@@ -1,13 +1,18 @@
 //MODULE DESIGN PATTERN
 //create an immediate executed function inside a variable to protect the variables and methodos from the global scope
 
+//MODULE REVEAL PATTERN
+//move returned functions from module pattern out and
+//use _undescore before each private variable and method.
+
+(function(win, doc, $){
 var chatModule = (function(){
-	var loadself = 'Me: ';
-	var	leadcomputer= "PC: ";
-	var	aSaid = ["This is a Cyber Chat"];
-	var	msgYes = "Yes, that's a great idea.";
-	var	msgNo= "No, that must be a mistake.";
-	var	aSassyStuff = ["Like mold on books, grow myths on history.",
+	var _loadself = 'Me: ';
+	var	_leadcomputer= "PC: ";
+	var	_aSaid = ["This is a Cyber Chat"];
+	var	_msgYes = "Yes, that's a great idea.";
+	var	_msgNo= "No, that must be a mistake.";
+	var	_aSassyStuff = ["Like mold on books, grow myths on history.",
 									"She moved like a poem and smiled like a sphinx.",
 									"As long as we don’t die, this is gonna be one hell of a story.",
 									"She laughed, and the desert sang.",
@@ -22,33 +27,38 @@ var chatModule = (function(){
 									"Configurable 24/7 functionalities"
 								];
 
-	function echo(msg){
-		aSaid.push('<div>' + msg + '</div>');
+	function _echo(msg){
+		_aSaid.push('<div>' + msg + '</div>');
 
-		var aSaidLength = aSaid.length;
+		var aSaidLength = _aSaid.length;
 		var start = Math.max(aSaidLength - 6, 0)
 		var out = '';
 
 		for(let i = start; i < aSaidLength; i++){
-			out += aSaid[i]
+			out += _aSaid[i]
 		}
 		$('.advert').html(out);
 		$('#talk span').text(msg);
 	}
 
-	return{
-		talk: function(msg) {
-			echo(loadself + msg);
-		},
-		replyYesNo: function(){
-			var msg = Math.random() > .5 ? msgYes : msgNo;
-			echo(leadcomputer + msg)
-		},
-		saySassyStuff: function() {
-			var msg = aSassyStuff[Math.floor(Math.random() * aSassyStuff.length)];
-			echo(leadcomputer + msg);
+	
+		function talk(msg) {
+			_echo(_loadself + msg);
+		};
+		function replyYesNo(){
+			var msg = Math.random() > .5 ? _msgYes : _msgNo;
+			_echo(_leadcomputer + msg)
+		};
+		function saySassyStuff() {
+			var msg = _aSassyStuff[Math.floor(Math.random() * _aSassyStuff.length)];
+			_echo(_leadcomputer + msg);
 		}
-	}
+		return {
+			talk: talk,
+			replyYesNo: replyYesNo,
+			saySassyStuff: saySassyStuff
+		};
+	
 })();
 
 $(document).ready(function(){
@@ -56,15 +66,20 @@ $(document).ready(function(){
 	chatModule.replyYesNo();
 	chatModule.saySassyStuff();
 });
+if(!win.chatModule) win.chatModule = chatModule
+})(window, document, jQuery)
 
+
+console.log(window.chatModule)
 
 // NAME-SPACE DESGIN PATTERN 
 // create long names and initialize folders to make sure they are unique
+/*
 var io = io || {};
 io.spepy = io.spepy || {};
 io.spepy.jsdp = io.spepy.jsdp || {};
 io.spepy.jsdp.sudoChat = io.spepy.jsdp.sudoChat || {};
-
+*/
 
 //OBJECT LITERAL DESIGN PATTERN
 // place all variables and methods inside an object literal, to protect them from the global scope.
